@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>No Mates al Poro</title>
+    <link rel="stylesheet" type="text/css" href="personajes.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body onload="main()">
+    <img id="imgFondo" src="./image/mapa_fondo1.jpg" onclick="disparoKO()" />
+    <audio id="sndDisparo" autoplay></audio>
+    <input type="text" id="txtPuntos" />
+
+    <img id="img_cuadro" src="./image/img_cuadro.png">
+
+    <!-- Declaración de la imagen sin la función click -->
+    <img id="imgPersonaje" src="./image/1x1t.gif" />
+
+    <img id="imgporo" src="./image/poro2.gif">
+    <b id="txtporo1">-20 pts</b>
+
+    <img id="imgporo1" src="./image/poro3.gif">
+    <b id="txtporo2">-15 pts</b>
+
+    <img id="imgpj1" src="./image/top.gif">
+    <b id="txtpj1">15 pts</b>
+
+    <img id="imgpj2" src="./image/zac.gif">
+    <b id="txtpj2">10 pts</b>
+
+    <img id="imgpj3" src="./image/teemo1.gif">
+    <b id="txtpj3">15 pts</b>
+
+    <img id="imgpj5" src="./image/adc.gif">
+    <b id="txtpj5">40 pts</b>
+
+    <img id="imgpj4" src="./image/supp.gif">
+    <b id="txtpj4">20 pts</b>
+
+    <img id="imgBtnInicio" src="./image/btn_inicio1.png" />
+    <div id="divCanana"></div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var imagenpersonaje = ["./image/top.gif", "./image/zac.gif", "./image/teemo1.gif", "./image/adc.gif", "./image/supp.gif", "./image/poro2.gif", "./image/poro3.gif"];
+            var personajesPuntos = [15, 10, 15, 40, 20, -20, -15];
+            var Velocidad = [70, 70, 70, 70, 70, 80, 80];
+            var totalBalas = 7;
+            var totalPersonajes = imagenpersonaje.length;
+            var puntos;
+            var coordX;
+            var coordY;
+            var modo;  // Agregué la declaración de la variable modo
+            var altoImgFondo;
+            var anchoImgFondo;
+            var quePersonaje;
+            var puedeDisparar;
+            var timer;
+            var tiro;
+            var divCanana = $('#divCanana');
+            var imgFondo = $('#imgFondo')[0];
+            var imgPersonaje = $('#imgPersonaje')[0];
+            var txtPuntos = $('#txtPuntos')[0];
+            var imgBala = [];
+
+            main();
+            $('#imgBtnInicio').on('click', function () {
+                preguntarEmpezarJuego();
+            });
+
+            $('#imgFondo').on('click', disparoKO);
+            $('#imgPersonaje').on('click', disparoOK);
+
+            function main() {
+                redimensionarVentana();
+                crearCanana();
+            }
+
+            function redimensionarVentana() {
+                var ancho = imgFondo.width;
+                var alto = imgFondo.height;
+                window.resizeTo(ancho, alto);
+            }
+
+            function crearCanana() {
+                for (var b = 0; b < totalBalas; b++) {
+                    var imagen = $('<img>').attr({
+                        'name': 'imgBala',
+                        'src': './image/1x1t.gif',
+                        'width': 34,
+                        'height': 33
+                    });
+                    imgBala.push(imagen[0]);
+                    divCanana.append(imagen);
+                }
+            }
+
+            function preguntarEmpezarJuego() {
+                if (confirm("¿ Deseas iniciar una partida ?")) {
+                    iniciarPartida();
+                    $('#imgBtnInicio').hide();
+                }
+            }
+
+            function iniciarPartida() {
+                altoImgFondo = imgFondo.height;
+                anchoImgFondo = imgFondo.width;
+                puntos = 0;
+                tiro = 0;
+                prepararCanana();
+                mostrarPuntos();
+                nuevoPersonaje();
+            }
+
+            function prepararCanana() {
+                for (var b = 0; b < totalBalas; b++) {
+                    $(imgBala[b]).attr('src', './image/bala.png');
+                }
+            }
+
+            function nuevoPersonaje() {
+                quePersonaje = Math.floor(Math.random() * totalPersonajes);
+                $(imgPersonaje).attr('src', imagenpersonaje[quePersonaje]);
+
+                modo = Math.floor(Math.random() * 2);
+
+                coordY = Math.floor(Math.random() * (altoImgFondo - imgPersonaje.height - 100));
+                if (modo === 0) {
+                    if (coordY < 130) {
+                        coordX = coordX = 400;
+                    } else {
+                        coordX = 0;
+                    }
+                } else {
+                    coordX = anchoImgFondo - imgPersonaje.width;
+                }
+                iniciarMovimientoPersonaje();
+                puedeDisparar = true;
+            }
+
+            function iniciarMovimientoPersonaje() {
+                detenerMovimientoPersonaje();
+                timer = setInterval(desplazaPersonaje, 250);
+            }
+
+            function detenerMovimientoPersonaje() {
+                clearInterval(timer);
+            }
+
+            function desplazaPersonaje() {
+                if (modo === 0) {
+                    coordX += Velocidad[quePersonaje];
+                } else {
+                    coordX -= Velocidad[quePersonaje];
+                }
+
+                $(imgPersonaje).css({
+                    'left': coordX + 'px',
+                    'top': coordY + 'px'
+                });
+
+                if ((modo === 0 && coordX > anchoImgFondo) || (modo === 1 && coordX + imgPersonaje.width < 0) || (modo === 1 && coordY < 150 && coordX < 500)) {
+                    nuevoPersonaje();
+                }
+            }
+
+            function mostrarPuntos() {
+                txtPuntos.value = puntos + ' Puntos';
+            }
+
+            function disparoOK() {
+                if (!puedeDisparar) {
+                    return;
+                }
+                puntos += personajesPuntos[quePersonaje];
+                mostrarPuntos();
+                var quedanBalas = disparoRealizado();
+                sndDisparo.src = 'muerte.mp3';
+                if (quedanBalas) {
+                    nuevoPersonaje();
+                }
+            }
+
+            function disparoKO() {
+                if (!puedeDisparar) {
+                    return;
+                }
+                puntos -= 10;
+                if (puntos <= 0) {
+                    puntos = 0;
+                }
+                mostrarPuntos();
+                var quedanBalas = disparoRealizado();
+            }
+
+            function disparoRealizado() {
+                sndDisparo.src = 'disparo.wav';
+                $(imgBala[tiro]).attr('src', './image/1x1t.gif');
+                tiro += 1;
+                var quedanBalas = (tiro < totalBalas);
+                if (!quedanBalas) {
+                    finDelJuego();
+                }
+                return quedanBalas;
+            }
+
+            function finDelJuego() {
+                detenerMovimientoPersonaje();
+                $(imgPersonaje).attr('src', './image/1x1t.gif');
+                puedeDisparar = false;
+                var mensaje = 'FIN DE LA PARTIDA.\nHas conseguido ' + puntos + ' puntos !!!';
+                alert(mensaje);
+                $('#imgBtnInicio').show();
+                preguntarEmpezarJuego();
+            }
+        });
+    </script>
+</body>
+
+</html>

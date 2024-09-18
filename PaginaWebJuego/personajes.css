@@ -1,0 +1,134 @@
+body{
+	margin: 0px;
+}
+#imgFondo{
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+	background-size: cover;	cursor: url(diana.ani);
+}
+#imgPersonaje{
+	cursor: url(diana.ani); 
+	position: absolute;
+	width: 150px;
+	overflow-x: hidden;
+}
+#imgBtnInicio{
+	position: absolute;
+	bottom: 0px;
+	left: 40%;
+    width: 240px;
+}
+#divCanana{
+	position: absolute;
+	top: 5px;
+	left: 530px;
+}
+#txtPuntos{
+	background-color: transparent;
+	border: 0px solid #000000;
+	position: absolute;
+	top: 0px;
+	left: 10px;
+	font-family: 'Arial Black', Gadget, sans-serif;
+	font-size: medium;
+	color: #5fdd24;
+}
+#img_cuadro{
+	position: absolute;
+	top: 20px;
+	width: 500px;
+	height: 200px;
+	left: 0px;
+	opacity: 30%;
+
+}
+#imgporo{
+	width: 60px;
+	position: absolute;
+	left: 30px;
+	top: 30px;
+}
+#imgporo1{
+	width: 60px;
+	position: absolute;
+	left: 90px;
+	top: 140px;
+}
+#txtporo1{
+	position: absolute;
+	left: 35px;
+	top: 85px;
+	color: white;
+}
+#txtporo2{
+	position: absolute;
+	left: 95px;
+	top: 130px;
+	color: white;
+}
+#imgpj1{
+	width: 60px;
+	position: absolute;
+	left: 155px;
+	top: 30px;
+
+}
+#txtpj1{
+	position: absolute;
+	left: 163px;
+	color: white;
+	top: 92px;
+}
+#imgpj2{
+	width: 60px;
+	position: absolute;
+	left: 220px;
+	top: 140px;
+}
+#txtpj2{
+	position: absolute;
+	left: 225px;
+	top: 125px;
+	color: white;
+}
+#imgpj3{
+	width: 60px;
+	position: absolute;
+	left: 288px;
+	top: 30px;
+}
+#txtpj3{
+	position: absolute;
+	left: 296px;
+	color: white;
+	top: 92px;
+}
+#imgpj4{
+	width: 90px;
+	position: absolute;
+	left: 340px;
+	top: 120px;
+
+}
+#txtpj4{
+	position: absolute;
+	left: 357px;
+	top: 125px;
+	color: white;
+}
+#imgpj5{
+	width: 60px;
+	position: absolute;
+	left: 410px;
+	top: 30px;
+}
+#txtpj5{
+	position: absolute;
+	left: 415px;
+	top: 92px;
+	color: white;
+}
